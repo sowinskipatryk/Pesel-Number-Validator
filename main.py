@@ -17,6 +17,8 @@ def generate_ssns(amount):
 # print(generate_ssns(10))
 
 
+# implementing a helper function to generate a list of valid PESEL numbers fragments based on a date range
+# given as arguments
 def generate_pesel_list(from_date, to_date):
 
     pesel_dates = []
@@ -51,6 +53,8 @@ def generate_pesel_list(from_date, to_date):
     return pesel_dates
 
 
+# implementation of the function that returns the number of PESEL numbers meeting the given conditions - gender
+# and date of birth determined by the input parameter
 def generate_unique_ssns(amount, sex, from_date, to_date):
     pesel_dates = generate_pesel_list(from_date, to_date)
     ssns = []
@@ -61,9 +65,13 @@ def generate_unique_ssns(amount, sex, from_date, to_date):
             ssns.append(result)
     return pd.Series(data=ssns, index=(list(range(amount))))
 
+
+# calling the function and displaying the result on the screen for the argument equal to 10 and the conditions to be
+# fulfilled - gender equals male and date range from 17-07-1994 to 11-12-1995
 # print(generate_unique_ssns(10, "M", '1994-07-17', '1995-12-11'))
 
 
+# implementation of a helper function to call the function given as an argument in a loop and measure the iteration time
 def func_iterate(i, func, *args):
     start = time()
     for _ in range(i):
@@ -71,6 +79,7 @@ def func_iterate(i, func, *args):
     end = time() - start
     print(f'It took {(round(end,2))} seconds to execute {i} iterations of the {func.__name__} function.')
 
+# calling the helper function for both ssns generating functions for 10, 100 and 1000 iterations of 1000 records
 # func_iterate(10, generate_ssns, 1000)
 # func_iterate(100, generate_ssns, 1000)
 # func_iterate(1000, generate_ssns, 1000)
@@ -79,6 +88,8 @@ def func_iterate(i, func, *args):
 # func_iterate(1000, generate_unique_ssns, 1000, "M", '1994-06-19', '1995-12-18')
 
 
+# implementation of the function which returns information about correct or incorrect validation of the PESEL number
+# based on the given data - PESEL number to be checked, gender and date of birth
 def validate_ssn(pesel, sex, birth_date_str):
     if (int(pesel[9]) % 2 == 0 and sex == 'F') or (int(pesel[9]) % 2 != 0 and sex == 'M') or sex == '':
 
