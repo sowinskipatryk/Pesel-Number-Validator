@@ -1,0 +1,1 @@
+This script is one of the recruitment tasks that I've come across. Its meaning is to use the pandas and faker libraries to generate fake data, validate it and specify some conditions (birth date, gender).
