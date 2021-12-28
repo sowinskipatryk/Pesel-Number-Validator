@@ -55,12 +55,12 @@ def generate_pesel_list(from_date, to_date):
 
 # implementation of the function that returns the number of PESEL numbers meeting the given conditions - gender
 # and date of birth determined by the input parameter
-def generate_unique_ssns(amount, sex, from_date, to_date):
+def generate_unique_ssns(amount, gender, from_date, to_date):
     pesel_dates = generate_pesel_list(from_date, to_date)
     ssns = []
     while len(ssns) < amount:
         result = fake.unique.ssn()
-        if ((sex == "M" and int(result[9]) % 2 != 0) or (sex == "F" and int(result[9]) % 2 == 0)) \
+        if ((gender == "M" and int(result[9]) % 2 != 0) or (gender == "F" and int(result[9]) % 2 == 0)) \
                 and (result[0:6] in pesel_dates):
             ssns.append(result)
     return pd.Series(data=ssns, index=(list(range(amount))))
@@ -90,8 +90,8 @@ def func_iterate(i, func, *args):
 
 # implementation of the function which returns information about correct or incorrect validation of the PESEL number
 # based on the given data - PESEL number to be checked, gender and date of birth
-def validate_ssn(pesel, sex, birth_date_str):
-    if (int(pesel[9]) % 2 == 0 and sex == 'F') or (int(pesel[9]) % 2 != 0 and sex == 'M') or sex == '':
+def validate_ssn(pesel, gender, birth_date_str):
+    if (int(pesel[9]) % 2 == 0 and gender == 'F') or (int(pesel[9]) % 2 != 0 and gender == 'M') or gender == '':
 
         birth_date_obj = datetime.strptime(birth_date_str, '%Y-%m-%d')
 
@@ -119,8 +119,8 @@ def validate_ssn(pesel, sex, birth_date_str):
 
 # some examples of using the validation function
 validate_ssn('92120704192', 'M', '1992-12-07')
-validate_ssn('92120704182', 'M', '1992-12-07')  # validation error - wrong sex (PESEL number indicates female)
-validate_ssn('92120704192', 'F', '1992-12-07')  # validation error - wrong sex (PESEL number indicates male)
+validate_ssn('92120704182', 'M', '1992-12-07')  # validation error - wrong gender (PESEL number indicates female)
+validate_ssn('92120704192', 'F', '1992-12-07')  # validation error - wrong gender (PESEL number indicates male)
 validate_ssn('92120704182', 'F', '1992-12-07')
 validate_ssn('92120704192', 'M', '1992-12-08')  # validation error - birth date (day) doesn't match with PESEL number
 validate_ssn('02320704192', 'M', '2002-12-07')
